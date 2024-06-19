@@ -3,7 +3,6 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class GuiLogin extends JFrame{
-
     private JTextField tfLogin;
     private JLabel lbSenha;
     private JLabel lbLogin;
@@ -13,14 +12,11 @@ public class GuiLogin extends JFrame{
     private static GuiLogin frame;
 
     public GuiLogin() {
-
         inicializarComponentes();
         definirEventos ();
-
     }
 
     private void inicializarComponentes() {
-
         setTitle("Login no Sistema");
         setBounds(0, 0, 250, 200);
         setLayout(null);
@@ -43,7 +39,6 @@ public class GuiLogin extends JFrame{
         add(btCancelar);
         add(pfSenha);
     }
-    
     private void definirEventos() {
 
         btLogar.addActionListener(new ActionListener() {
