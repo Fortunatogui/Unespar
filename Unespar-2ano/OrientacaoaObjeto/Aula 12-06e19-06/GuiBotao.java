@@ -1,6 +1,5 @@
 import java.awt.event.*;
 import javax.swing.*;
-
 public class GuiBotao extends JPanel{
     private JButton btMensagem, btTeimoso;
     private ImageIcon imageIcon1;
@@ -12,11 +11,11 @@ public class GuiBotao extends JPanel{
 
     private void inicializarComponentes() {
         setLayout(null);
-        imageIcon1 = new ImageIcon("java.jpg");
-        btMensagem = new JButton("Mensagem", imageIcon1);
+        String path = "sair.png";
+        btMensagem = new JButton("Mensagem", (new ImageIcon(getClass().getResource(path))));
         btMensagem.setBounds(50, 20, 140, 38);
         btMensagem.setMnemonic(KeyEvent.VK_M);
-        btMensagem.setToolTipText("Clique aqui para ver a 		mensagem");
+        btMensagem.setToolTipText("Clique aqui para ver a mensagem");
         btTeimoso = new JButton("Teimoso");
         btTeimoso.setBounds(50, 70, 100, 25);
         add(btMensagem);
@@ -31,7 +30,8 @@ public class GuiBotao extends JPanel{
         });
 
 		btTeimoso.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) { 						JOptionPane.showMessageDialog(null, "Botão Teimoso!");
+                public void actionPerformed(ActionEvent e) { 
+                    JOptionPane.showMessageDialog(null, "Botão Teimoso!");
                 }
         });
 
