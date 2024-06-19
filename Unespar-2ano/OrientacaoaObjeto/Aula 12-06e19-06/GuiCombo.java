@@ -1,7 +1,7 @@
 import java.awt.event.*;
 import javax.swing.*;
-
 public class GuiCombo extends JPanel{
+    @SuppressWarnings("rawtypes")
     private JComboBox cbEstados;
     private JLabel lbEstados;
     private JButton btMostrar;
@@ -14,7 +14,7 @@ public class GuiCombo extends JPanel{
     private void inicializarComponentes() {
         setLayout(null);
         String[] cbEstadosItems = {"Espirito Santo", "Minas Gerais", "Rio de Janeiro", "São Paulo"};
-        cbEstados = new JComboBox (cbEstadosItems);
+        cbEstados = new JComboBox<String>(cbEstadosItems);
         lbEstados = new JLabel("Estados do Sudeste:");
         btMostrar = new JButton("Mostrar");
         add(lbEstados);

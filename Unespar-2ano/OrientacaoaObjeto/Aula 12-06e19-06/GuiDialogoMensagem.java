@@ -2,6 +2,7 @@ import java.awt.event.*;
 import javax.swing.*;
 public class GuiDialogoMensagem extends JPanel {
     private ImageIcon imageIcon1;
+    @SuppressWarnings("rawtypes")
     private JComboBox cbCaixas;
 
     public GuiDialogoMensagem() {
@@ -11,10 +12,10 @@ public class GuiDialogoMensagem extends JPanel {
 
     private void inicializarComponentes() {
         setLayout(null);
-        String path = "estrela.gif";
+        String path = "lago.gif";
         imageIcon1 = new ImageIcon(getClass().getResource(path));
         String[] cbCaixasItens = {"Pergunta", "Informação", "Alerta", "Erro", "definida pelo usuário", "Somente Mensagem"};
-        cbCaixas = new JComboBox(cbCaixasItens);
+        cbCaixas = new JComboBox<>(cbCaixasItens);
         cbCaixas.setBounds(25, 40, 150, 25);
         add(cbCaixas) ;
     }

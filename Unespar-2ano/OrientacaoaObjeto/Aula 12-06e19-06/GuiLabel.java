@@ -11,7 +11,7 @@ public class GuiLabel extends JPanel {
 
     private void inicializarComponentes() {
         setLayout(new GridLayout(4, 1));
-        String path1 = "java_logo.jpg";
+        String path1 = "sair.png";
         imageIcon1 = new ImageIcon(getClass().getResource(path1));
         setBackground(new Color(100, 220, 192));
         label1 = new JLabel ("  Aprendendo", JLabel.LEFT);

@@ -1,10 +1,10 @@
 import java.awt.event.*;
 import javax.swing.*;
-
 public class GuiLista extends JPanel{
     private JButton btCalcular;
     private JLabel lbValor;
     private JTextField tfValor, tfValorDesconto;
+    @SuppressWarnings("rawtypes")
     private JList liDesconto;
     private JScrollPane spLista;
 
@@ -13,6 +13,7 @@ public class GuiLista extends JPanel{
         definirEventos();
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private void inicializarComponentes() {
         setLayout(null);
         String[] liDescontoItems = {"10%", "20%", "30%", "40%", "50%"};
