@@ -2,7 +2,6 @@ import java.awt.event.*;
 import javax.swing.*;
 public class GuiBotao extends JPanel{
     private JButton btMensagem, btTeimoso;
-    private ImageIcon imageIcon1;
 
     public GuiBotao() {
         inicializarComponentes();

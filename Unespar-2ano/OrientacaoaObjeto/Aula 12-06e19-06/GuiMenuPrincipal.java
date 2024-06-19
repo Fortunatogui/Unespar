@@ -6,7 +6,7 @@ public class GuiMenuPrincipal extends JFrame {
     private Container contentPane;
     private JMenuBar mnBarra;
     private JMenu mnArquivo, mnExemplos;
-    private JMenuItem miSair, miBotao;
+    private JMenuItem miSair, miBotao, miAreaDeTexto;
 
     public GuiMenuPrincipal() {
         inicializarComponentes();
@@ -27,6 +27,8 @@ public class GuiMenuPrincipal extends JFrame {
         miSair.setAccelerator (KeyStroke.getKeyStroke(
                 KeyEvent.VK_S, ActionEvent.ALT_MASK));
         miBotao = new JMenuItem("Botão");
+        miAreaDeTexto = new JMenuItem("Texto");
+
 
         mnArquivo.add(miSair);
         mnExemplos.add (miBotao);
@@ -48,6 +50,15 @@ public class GuiMenuPrincipal extends JFrame {
                 GuiBotao botao = new GuiBotao();
                 contentPane.removeAll();
                 contentPane.add(botao);
+                contentPane.validate();
+            }
+        });
+
+        miAreaDeTexto.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiAreaDeTexto texto = new GuiAreaDeTexto();
+                contentPane.removeAll();
+                contentPane.add(texto);
                 contentPane.validate();
             }
         });
