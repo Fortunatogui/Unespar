@@ -7,6 +7,7 @@ public class GuiMenuPrincipal extends JFrame {
     private JMenuBar mnBarra;
     private JMenu mnArquivo, mnExemplos;
     private JMenuItem miSair, miBotao, miAreaDeTexto, miCaixaOpcao, miCombo, miDialogoMensagem, miLabel, miLista, miRadio;
+    private JMenuItem miConf, miDialOp, miBarrRol, miBarrPro, miFlay, miGrid, miGuiAba, miFrame, miPedi, miMasc;
 
     public GuiMenuPrincipal() {
         inicializarComponentes();
@@ -25,7 +26,9 @@ public class GuiMenuPrincipal extends JFrame {
         String path = "sair.png";
         miSair = new JMenuItem("Sair", new ImageIcon(getClass().getResource(path)));
         miSair.setAccelerator (KeyStroke.getKeyStroke(
+
                 KeyEvent.VK_S, ActionEvent.ALT_MASK));
+
         miBotao = new JMenuItem("Botão");
         miAreaDeTexto = new JMenuItem("Area de Texto");
         miCaixaOpcao = new JMenuItem("Caixa de Opção");
@@ -34,6 +37,16 @@ public class GuiMenuPrincipal extends JFrame {
         miLabel = new JMenuItem("Label");
         miLista = new JMenuItem("Lista");
         miRadio = new JMenuItem("Radio");
+        miConf = new JMenuItem("Confirmacao");
+        miDialOp = new JMenuItem("Dialogo Opcao");
+        miBarrRol = new JMenuItem("Barra de Rolagem");
+        miBarrPro = new JMenuItem("Barra de Progresso");
+        miFlay = new JMenuItem("Flay Layout");
+        miGrid = new JMenuItem("Grid Layout");
+        miGuiAba = new JMenuItem("Abas");
+        miFrame = new JMenuItem("Frame Interno");
+        miPedi = new JMenuItem("Pedido");
+        miMasc = new JMenuItem("Mascara");
 
         mnArquivo.add(miSair);
         mnExemplos.add (miBotao);
@@ -44,6 +57,16 @@ public class GuiMenuPrincipal extends JFrame {
         mnExemplos.add(miLabel);
         mnExemplos.add(miLista);
         mnExemplos.add(miRadio);
+        mnExemplos.add(miConf);
+        mnExemplos.add(miDialOp);
+        mnExemplos.add(miBarrRol);
+        mnExemplos.add(miBarrPro);
+        mnExemplos.add(miFlay);
+        mnExemplos.add(miGrid);
+        mnExemplos.add(miGuiAba);
+        mnExemplos.add(miFrame);
+        mnExemplos.add(miPedi);
+        mnExemplos.add(miMasc);
 
         mnBarra.add (mnArquivo);
         mnBarra.add(mnExemplos);
@@ -129,7 +152,95 @@ public class GuiMenuPrincipal extends JFrame {
             }
         });
 
+        miConf.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiDialogoConfirmacao confirmacao = new GuiDialogoConfirmacao();
+                contentPane.removeAll();
+                contentPane.add(confirmacao);
+                contentPane.validate();
+            }
+        });
 
+        miDialOp.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiDialogoOpcao opcao = new GuiDialogoOpcao();
+                contentPane.removeAll();
+                contentPane.add(opcao);
+                contentPane.validate();
+            }
+        });
+
+        miBarrRol.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiBarraRolagem rolagem = new GuiBarraRolagem();
+                contentPane.removeAll();
+                contentPane.add(rolagem);
+                contentPane.validate();
+            }
+        });
+
+        miBarrPro.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiBarraProgresso progresso = new GuiBarraProgresso();
+                contentPane.removeAll();
+                contentPane.add(progresso);
+                contentPane.validate();
+            }
+        });
+
+        miFlay.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiFlayLayout3 layout3 = new GuiFlayLayout3();
+                contentPane.removeAll();
+                contentPane.add(layout3);
+                contentPane.validate();
+            }
+        });
+
+        miGrid.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiGridLayout1 gridLayout1 = new GuiGridLayout1();
+                contentPane.removeAll();
+                contentPane.add(gridLayout1);
+                contentPane.validate();
+            }
+        });
+
+        miGuiAba.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiAbas abas = new GuiAbas();
+                contentPane.removeAll();
+                contentPane.add(abas);
+                contentPane.validate();
+            }
+        });
+
+        miFrame.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiFrameInterno frameInterno = new GuiFrameInterno();
+                contentPane.removeAll();
+                contentPane.add(frameInterno);
+                contentPane.validate();
+            }
+        });
+
+        miPedi.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiPedido Pedido = new GuiPedido();
+                contentPane.removeAll();
+                contentPane.add(Pedido);
+                contentPane.validate();
+            }
+        });
+
+        miMasc.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiMascara mascara = new GuiMascara();
+                contentPane.removeAll();
+                contentPane.add(mascara);
+                contentPane.validate();
+            }
+        });
 
     }
 
