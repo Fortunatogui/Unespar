@@ -6,8 +6,8 @@ public class GuiMenuPrincipal extends JFrame {
     private Container contentPane;
     private JMenuBar mnBarra;
     private JMenu mnArquivo, mnExemplos;
-    private JMenuItem miSair, miBotao, miAreaDeTexto, miCaixaOpcao, miCombo, miDialogoMensagem, miLabel, miLista, miRadio;
-    private JMenuItem miConf, miDialOp, miBarrRol, miBarrPro, miFlay, miGrid, miGuiAba, miFrame, miPedi, miMasc;
+    private JMenuItem miSair, miBotao, miAreaDeTexto, miCaixaOpcao, miCombo, miDialogoMensagem, miLabel, miLista, miRadio, miBorderStyle1;
+    private JMenuItem miConf, miDialOp, miBarrRol, miBarrPro, miFlay, miGrid, miGuiAba, miFrame, miPedi, miMasc, miBorderStyle2;
 
     public GuiMenuPrincipal() {
         inicializarComponentes();
@@ -40,6 +40,8 @@ public class GuiMenuPrincipal extends JFrame {
         miConf = new JMenuItem("Confirmacao");
         miDialOp = new JMenuItem("Dialogo Opcao");
         miBarrRol = new JMenuItem("Barra de Rolagem");
+        miBorderStyle1 = new JMenuItem("Estilo da Borda");
+        miBorderStyle2 = new JMenuItem("Estilo da Borda2");
         miBarrPro = new JMenuItem("Barra de Progresso");
         miFlay = new JMenuItem("Flay Layout");
         miGrid = new JMenuItem("Grid Layout");
@@ -50,6 +52,8 @@ public class GuiMenuPrincipal extends JFrame {
 
         mnArquivo.add(miSair);
         mnExemplos.add (miBotao);
+        mnExemplos.add (miBorderStyle1);
+        mnExemplos.add (miBorderStyle2);
         mnExemplos.add(miAreaDeTexto);
         mnExemplos.add(miCaixaOpcao);
         mnExemplos.add(miCombo);
@@ -241,6 +245,25 @@ public class GuiMenuPrincipal extends JFrame {
                 contentPane.validate();
             }
         });
+
+        miBorderStyle1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiBorderStyle Estilo1 = new GuiBorderStyle();
+                contentPane.removeAll();
+                contentPane.add(Estilo1);
+                contentPane.validate();
+            }
+        });
+
+        miBorderStyle2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiBorderStyle2 Estilo2 = new GuiBorderStyle2();
+                contentPane.removeAll();
+                contentPane.add(Estilo2);
+                contentPane.validate();
+            }
+        });
+
 
     }
 
