@@ -1,13 +1,8 @@
 {
     "java.project.sourcePaths": [
-        "Unespar-2ano/OrientacaoaObjeto/Aula 24-04",
         "Unespar-2ano/OrientacaoaObjeto/Aula 17-04",
-        "Unespar-2ano/OrientacaoaObjeto/Aula 15-05/Ex1.2",
-        "Unespar-2ano/OrientacaoaObjeto/Aula 12-06e19-06",
-        "Unespar-2ano/OrientacaoaObjeto/Aula 08-05/Ex4",
-        "Unespar-2ano/OrientacaoaObjeto/Aula 08-05/Ex3",
-        "Unespar-2ano/OrientacaoaObjeto/Aula 08-05",
+        "Unespar-2ano/OrientacaoaObjeto/Aula 12-06a03-07",
         "Unespar-2ano/Nakahata/AOC/Aulas",
-        "Unespar-2ano/OrientacaoaObjeto/Aula 12-06a26-06"
+        "Unespar-2ano/OrientacaoaObjeto/Exercicios/Aula 03-07"
     ]
 }
