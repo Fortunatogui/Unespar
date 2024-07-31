@@ -1,5 +1,6 @@
 {
     "java.project.sourcePaths": [
+        "Unespar-2ano/TrabalhoLisandro",
         "Unespar-2ano/OrientacaoaObjeto/Exercicios/Aula 24-07",
         "Unespar-2ano/OrientacaoaObjeto/Exercicios/Aula 03-07",
         "Unespar-2ano/OrientacaoaObjeto/Aula 24-07",
@@ -7,6 +8,6 @@
         "Unespar-2ano/OrientacaoaObjeto/Aula 12-06a03-07",
         "Unespar-2ano/Nakahata/LFA",
         "Unespar-2ano/Nakahata/AOC/Aulas",
-        "Unespar-2ano/TrabalhoLisandro"
+        "Unespar-2ano/OrientacaoaObjeto/Aula 31-07"
     ]
 }

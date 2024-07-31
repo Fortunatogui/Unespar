@@ -1,7 +1,7 @@
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Exercício1 {
+public class CadastroDeProdutos {
 
     public static void main(String[] args) {
 
