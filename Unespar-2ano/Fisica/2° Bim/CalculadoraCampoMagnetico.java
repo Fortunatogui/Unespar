@@ -10,60 +10,94 @@ public class CalculadoraCampoMagnetico extends JFrame {
     public CalculadoraCampoMagnetico() {
         // Configurações da janela
         setTitle("Calculadora de Campo Magnético");
-        setSize(400, 200);
+        setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null);
 
-        // Rótulos e caixas de opções
-        JLabel currentLabel = new JLabel("Corrente (i) em A:");
-        currentLabel.setBounds(20, 20, 150, 25);
-        add(currentLabel);
+        // Rótulos e campos de texto
+        JLabel correnteLabel = new JLabel("Corrente (i) em A:");
+        correnteLabel.setBounds(20, 20, 150, 25);
+        add(correnteLabel);
 
-        String[] currentOptions = {"1.0", "2.0", "3.0", "4.0", "5.0"};
-        JComboBox<String> currentComboBox = new JComboBox<>(currentOptions);
-        currentComboBox.setBounds(180, 20, 150, 25);
-        add(currentComboBox);
+        JTextField correnteTextField = new JTextField();
+        correnteTextField.setBounds(180, 20, 150, 25);
+        add(correnteTextField);
 
-        JLabel radius1Label = new JLabel("Raio R1 em m:");
-        radius1Label.setBounds(20, 60, 150, 25);
-        add(radius1Label);
+        JLabel raio1Label = new JLabel("Raio R1 em m:");
+        raio1Label.setBounds(20, 60, 150, 25);
+        add(raio1Label);
 
-        String[] radius1Options = {"2.0", "3.0", "4.0", "5.0"};
-        JComboBox<String> radius1ComboBox = new JComboBox<>(radius1Options);
-        radius1ComboBox.setBounds(180, 60, 150, 25);
-        add(radius1ComboBox);
+        JTextField raio1TextField = new JTextField();
+        raio1TextField.setBounds(180, 60, 150, 25);
+        add(raio1TextField);
 
-        JLabel radius2Label = new JLabel("Raio R2 em m:");
-        radius2Label.setBounds(20, 100, 150, 25);
-        add(radius2Label);
+        JLabel raio2Label = new JLabel("Raio R2 em m:");
+        raio2Label.setBounds(20, 100, 150, 25);
+        add(raio2Label);
 
-        String[] radius2Options = {"1.0", "1.5", "2.0", "2.5"};
-        JComboBox<String> radius2ComboBox = new JComboBox<>(radius2Options);
-        radius2ComboBox.setBounds(180, 100, 150, 25);
-        add(radius2ComboBox);
+        JTextField raio2TextField = new JTextField();
+        raio2TextField.setBounds(180, 100, 150, 25);
+        add(raio2TextField);
 
         // Botão para calcular
-        JButton calculateButton = new JButton("Calcular");
-        calculateButton.setBounds(130, 140, 120, 25);
-        add(calculateButton);
+        JButton calcularButton = new JButton("Calcular");
+        calcularButton.setBounds(180, 150, 120, 25);
+        add(calcularButton);
+
+        // Rótulos para resultados
+        JLabel resultadoCampoLabel = new JLabel("Campo Magnético Total:");
+        resultadoCampoLabel.setBounds(20, 190, 200, 25);
+        add(resultadoCampoLabel);
+
+        JLabel resultadoCampoValor = new JLabel("");
+        resultadoCampoValor.setBounds(230, 190, 200, 25);
+        add(resultadoCampoValor);
+
+        JLabel circunferenciaMaiorLabel = new JLabel("Circunferência Maior (R2):");
+        circunferenciaMaiorLabel.setBounds(20, 220, 200, 25);
+        add(circunferenciaMaiorLabel);
+
+        JLabel circunferenciaMaiorValor = new JLabel("");
+        circunferenciaMaiorValor.setBounds(230, 220, 200, 25);
+        add(circunferenciaMaiorValor);
+
+        JLabel quartosCircunferenciaLabel = new JLabel("Quartos Circunferência Menor (R1):");
+        quartosCircunferenciaLabel.setBounds(20, 250, 250, 25);
+        add(quartosCircunferenciaLabel);
+
+        JLabel quartosCircunferenciaValor = new JLabel("");
+        quartosCircunferenciaValor.setBounds(270, 250, 200, 25);
+        add(quartosCircunferenciaValor);
 
         // Ação do botão
-        calculateButton.addActionListener(new ActionListener() {
+        calcularButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double current = Double.parseDouble((String) currentComboBox.getSelectedItem());
-                double radius1 = Double.parseDouble((String) radius1ComboBox.getSelectedItem());
-                double radius2 = Double.parseDouble((String) radius2ComboBox.getSelectedItem());
+                try {
+                    // Obtém os valores inseridos pelo usuário
+                    double corrente = Double.parseDouble(correnteTextField.getText());
+                    double raio1 = Double.parseDouble(raio1TextField.getText());
+                    double raio2 = Double.parseDouble(raio2TextField.getText());
 
-                // Cálculo do campo magnético
-                double B1 = calcularCampoMagnetico(current, Math.PI, radius1);
-                double B2 = calcularCampoMagnetico(current, Math.PI / 2, radius2);
+                    // Cálculo do campo magnético
+                    double B1 = calcularCampoMagnetico(corrente, Math.PI, raio1);
+                    double B2 = calcularCampoMagnetico(corrente, Math.PI / 2, raio2);
 
-                double campoMagneticoTotal = B1 + 2 * B2;
+                    double campoMagneticoTotal = B1 + 2 * B2;
 
-                // Exibe o resultado
-                JOptionPane.showMessageDialog(null, "Campo Magnético Total: " + campoMagneticoTotal + " T");
+                    // Calcula a circunferência
+                    double circunferenciaMaior = 2 * Math.PI * raio2;
+                    double quartosCircunferenciaMenor = (Math.PI / 2) * raio1;
+
+                    // Exibe os resultados
+                    resultadoCampoValor.setText(String.format("%.6f T", campoMagneticoTotal));
+                    circunferenciaMaiorValor.setText(String.format("%.6f m", circunferenciaMaior));
+                    quartosCircunferenciaValor.setText(String.format("%.6f m", quartosCircunferenciaMenor));
+
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Por favor, insira valores válidos.");
+                }
             }
         });
     }
