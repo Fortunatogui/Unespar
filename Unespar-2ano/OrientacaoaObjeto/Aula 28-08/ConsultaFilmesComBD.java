@@ -1,4 +1,3 @@
-package OrientacaoaObjeto;
 import java.sql.*;
 public class ConsultaFilmesComBD {
     public static void main (String[] args) {

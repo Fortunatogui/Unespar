@@ -1,4 +1,3 @@
-package OrientacaoaObjeto;
 import java.sql.*;
 public class BD {
     public Connection connection = null;
