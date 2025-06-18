@@ -29,14 +29,14 @@ string getTipoSimbolo(const string& simbolo) {
 
 int main() {
     // Abre o arquivo de entrada
-    ifstream arquivo("C:\\Users\\fortu\\Downloads\\Unespar\\Unespar\\Unespar-3ano\\Compiladores1Bim\\teste.txt");
+    ifstream arquivo("C:\\Users\\fortu\\Downloads\\Unespar\\Unespar\\Unespar-3ano\\Compiladores\\1Bim\\teste.txt");
     if (!arquivo.is_open()) {
         cout << "Erro ao abrir o arquivo." << endl;
         return 1;
     }
 
     // Cria o arquivo de saída
-    ofstream saida("C:\\Users\\fortu\\Downloads\\Unespar\\Unespar\\Unespar-3ano\\Compiladores1Bim\\saida.txt");
+    ofstream saida("C:\\Users\\fortu\\Downloads\\Unespar\\Unespar\\Unespar-3ano\\Compiladores\\1Bim\\saida.txt");
     if (!saida.is_open()) {
         cout << "Erro ao criar o arquivo de saída." << endl;
         return 1;
