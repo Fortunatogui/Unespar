@@ -1,85 +1,89 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
-#define max 25
 
-int main()
-{
-    setlocale(LC_ALL, "Portuguese");
+#define MAX 25 
 
-    int frag[max], b[max], f[max], i, j, nb, nf, temp, maior = 0; // Variáveis para armazenar os tamanhos dos blocos e processos
-    static int bf[max], ff[max]; // bf para Best Fit, ff para First Fit usados no algoritmo de alocação
-    int flag, fragmentacaoInterna = 0; // Variável para controle de alocação e fragmentação interna
+int main() { 
+    int blocoTamanho[MAX], processoTamanho[MAX]; //arrays para armazenar os tamanhos dos blocos e processos
+    int numBlocos, numProcessos; // variaveis para armazenar o numero de blocos e processos
+    int i, j; // variaveis de controle para loops
+    int blocoIndex[MAX]; // guarda o indice original dos blocos
+    int blocoUsado[MAX] = {0}; // marca quais blocos foram usados
+    int fragmentoInterno = 0; //soma de espaços dentro dos blocos alocados, mas não usados.
+    int fragmentoExterno = 0; //soma de espaços em blocos não alocados.
 
-    printf("\n\tGerenciamento de memoria - Worst Fit\n");
-    printf("\nDigite o numero de blocos de memoria: "); // Blocos de memória
-    scanf("%d", &nb);
-    printf("\nDigite o numero de processos: "); // Processos a serem alocados
-    scanf("%d", &nf);
+    printf("\n\tGerenciamento de Memoria - Worst Fit\n");
 
-    printf("\nDigite o tamanho dos blocos:\n"); // Tamanhos dos blocos de memória
-    for(i = 1; i <= nb; i++) {
-        printf("Bloco %d: ", i);
-        scanf("%d", &b[i]);
-        ff[i] = i; // Armazena o índice do bloco para First Fit 
+    // Entrada de dados
+    printf("\nDigite o numero de blocos de memoria: ");
+    scanf("%d", &numBlocos);
+
+    printf("Digite o numero de processos: ");
+    scanf("%d", &numProcessos);
+
+    // Solicitação de tamanho dos blocos:
+    printf("\nDigite o tamanho dos blocos:\n");
+    for(i = 0; i < numBlocos; i++) {
+        printf("Bloco %d: ", i + 1);
+        scanf("%d", &blocoTamanho[i]);
+        blocoIndex[i] = i + 1; // salva o numero original do bloco
     }
 
+    // Solicitação de tamanho dos processos:
     printf("\nDigite o tamanho dos processos:\n");
-    // Tamanhos dos processos a serem alocados 
-    for(i = 1; i <= nf; i++) { 
-        printf("Processo %d: ", i);
-        scanf("%d", &f[i]); 
+    for(i = 0; i < numProcessos; i++) {
+        printf("Processo %d: ", i + 1);
+        scanf("%d", &processoTamanho[i]);
     }
 
-    int y, z, temp1; // Variáveis auxiliares para ordenação dos blocos
-    // Ordena os blocos de memória em ordem decrescente para aplicar o algoritmo Worst Fit
-    for(y = 1; y <= nb; y++) {
-        // Ordena os blocos de memória
-        for(z = y; z <= nb; z++) { 
-            // Compara os tamanhos dos blocos e troca se necessário
-            if(b[y] < b[z]) {
-                temp = b[y]; // Armazena o tamanho do bloco para troca
-                b[y] = b[z]; // Troca os tamanhos dos blocos
-                b[z] = temp; // Atualiza o tamanho do bloco
-                temp1 = ff[y]; // Armazena o índice do bloco para First Fit
-                ff[y] = ff[z]; // Troca os índices dos blocos
-                ff[z] = temp1; // Atualiza o índice do bloco
+    // Ordena blocos em ordem decrescente (para Worst Fit)
+    for(i = 0; i < numBlocos - 1; i++) { // bloco atual
+        for(j = i + 1; j < numBlocos; j++) { // bloco a comparar
+            if(blocoTamanho[i] < blocoTamanho[j]) { // troca os blocos se o tamanho do bloco i for menor que o tamanho do bloco j
+                int temp = blocoTamanho[i]; // troca os tamanhos dos blocos
+                blocoTamanho[i] = blocoTamanho[j]; // bloco i recebe o tamanho do bloco j
+                blocoTamanho[j] = temp;
+
+                // troca os indices dos blocos
+                int tempIdx = blocoIndex[i]; 
+                blocoIndex[i] = blocoIndex[j];
+                blocoIndex[j] = tempIdx;
             }
         }
     }
 
-    int alocado[max]; // Array para controle de alocação dos blocos
-    int fragmentacaoExterna = 0; 
+    // Alocacao dos processos
+    printf("\n\nProcesso\tTamanho\t\tBloco\tTamanho Bloco\tFragmento\n");
+    for(i = 0; i < numProcessos; i++) {
+        int alocado = 0;
 
-    printf("\n\nProcesso\tTamanho do Processo\tBloco\tTamanho do Bloco\tFragmento\n");
-    for(i = 1; i <= nf; i++) {
-        flag = 1; // Variável para verificar se o processo foi alocado 
-        // Verifica se o processo pode ser alocado em algum bloco
-        for(j = 1; j <= nb; j++) {
-            // Se o processo cabe no bloco e o bloco não foi alocado
-            if(f[i] <= b[j]) {
-                alocado[j] = 1; // Marca o bloco como alocado
-                printf("%-15d\t%-20d\t%-10d\t%-17d\t", i, f[i], ff[j], b[j]);
-                b[j] = b[j] - f[i]; // Atualiza o tamanho do bloco após alocação
-                fragmentacaoInterna += b[j]; // Calcula a fragmentação interna
-                printf("%-10d\n", b[j]); // Exibe o tamanho do fragmento restante
+        for(j = 0; j < numBlocos; j++) {
+            if(processoTamanho[i] <= blocoTamanho[j]) { // verifica se o tamanho do processo cabe no bloco
+                printf("%-8d\t%-8d\t%-8d\t%-14d\t%-8d\n", 
+                    i + 1, processoTamanho[i], blocoIndex[j], blocoTamanho[j], blocoTamanho[j] - processoTamanho[i]);
+
+                fragmentoInterno += blocoTamanho[j] - processoTamanho[i]; // Calculo quanto de memória vai sobrar dentro do bloco depois do processo alocado
+                blocoTamanho[j] -= processoTamanho[i]; // Atualiza o tamanho do bloco após alocar o processo
+                blocoUsado[j] = 1; // Marca o bloco como usado
+                alocado = 1;
                 break;
-            } else {
-                alocado[j] = 0;
-                flag++;
             }
         }
-        if(flag > nb) // Se o processo não couber em nenhum bloco ele marca como aguardando
-            printf("%-15d\t%-20d\t%-10s\t%-17s\t%-10s\n", i, f[i], "AGUARDANDO...", "AGUARDANDO...", "AGUARDANDO...");
+
+        if(!alocado) {
+            printf("%-8d\t%-8d\t%-8s\t%-14s\t%-8s\n", i + 1, processoTamanho[i], "AGUARDANDO", "AGUARDANDO", "AGUARDANDO");
+        }
     }
 
-    printf("\nFragmentacao Interna = %d", fragmentacaoInterna);
-    // Calcula a fragmentação externa
-    for(j = 1; j <= nb; j++) {
-        if(alocado[j] != 1) // Se o bloco não foi alocado, conta como fragmentação externa
-            fragmentacaoExterna += b[j]; 
+    // Fragmentacao externa = blocos nao usados
+    for(i = 0; i < numBlocos; i++) {
+        if(blocoUsado[i] == 0) {
+            fragmentoExterno += blocoTamanho[i];
+        }
     }
-    printf("\nFragmentacao Externa = %d\n", fragmentacaoExterna);
+
+    printf("\nFragmentacao Interna = %d", fragmentoInterno);
+    printf("\nFragmentacao Externa = %d\n", fragmentoExterno);
 
     return 0;
 }

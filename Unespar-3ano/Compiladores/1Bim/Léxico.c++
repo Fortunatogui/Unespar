@@ -10,7 +10,7 @@
 
 using namespace std;
 
-// Função para verificar se um caractere é um símbolo válido 
+// Função para verificar se um caractere é um símbolo válido
 bool isSymbol(char c) {
     string symbols = "+-*/:=<>{}();.,[]^";
     return symbols.find(c) != string::npos;
@@ -18,8 +18,9 @@ bool isSymbol(char c) {
 
 // Função para determinar se um símbolo é simples ou composto
 string getTipoSimbolo(const string& simbolo) {
-    unordered_set<string> simbolosCompostos = { ":=", "<=", ">=", "<>", "==" };
-    
+
+    unordered_set<string> simbolosCompostos = { ":=", "<=", ">=", "<>", "==", ".." };
+
     if (simbolosCompostos.count(simbolo)) {
         return "Simbolo composto";
     } else {
@@ -31,28 +32,29 @@ int main() {
     // Abre o arquivo de entrada
     ifstream arquivo("C:\\Users\\fortu\\Downloads\\Unespar\\Unespar\\Unespar-3ano\\Compiladores\\1Bim\\teste.txt");
     if (!arquivo.is_open()) {
-        cout << "Erro ao abrir o arquivo." << endl;
+        cout << "Erro ao abrir o arquivo. Verifique o caminho: C:\\Users\\fortu\\Downloads\\Unespar\\Unespar\\Unespar-3ano\\Compiladores\\1Bim\\teste.txt" << endl;
         return 1;
     }
 
     // Cria o arquivo de saída
     ofstream saida("C:\\Users\\fortu\\Downloads\\Unespar\\Unespar\\Unespar-3ano\\Compiladores\\1Bim\\saida.txt");
     if (!saida.is_open()) {
-        cout << "Erro ao criar o arquivo de saída." << endl;
+        cout << "Erro ao criar o arquivo de saída. Verifique as permissões de escrita: C:\\Users\\fortu\\Downloads\\Unespar\\Unespar\\Unespar-3ano\\Compiladores\\1Bim\\saida.txt" << endl;
         return 1;
     }
 
-    // Conjunto de palavras reservadas 
+    // Conjunto de palavras reservadas, agora com 'label', 'type', 'array', 'of' e 'real'
     unordered_set<string> palavrasReservadas = {
-        "Program", "var", "function", "begin", "end", "read", "write",
-        "if", "then", "else", "integer", "boolean", "double", "while",
-        "procedure", "for", "do", "not", "and", "or", "to", "downto"
+        "program", "Program", "var", "function", "begin", "end", "read", "write",
+    "if", "then", "else", "integer", "boolean", "double", "while",
+    "procedure", "goto", "for", "do", "not", "and", "or", "to", "downto",
+    "label", "type", "array", "of", "real", "div", "mod" 
     };
 
     string linha; // Variável para armazenar cada linha do arquivo
     int numeroLinha = 0; // Contador de linhas
-    
-    // Configuração da tabela
+
+    // Configuração da tabela para impressão no console e arquivo
     const int lexemaWidth = 20; // Largura da coluna "Lexema"
     const int tipoWidth = 25; // Largura da coluna "Tipo"
 
@@ -67,105 +69,129 @@ int main() {
     // Lê o arquivo linha por linha
     while (getline(arquivo, linha)) {
         numeroLinha++;
-        string token;
+        string token_buffer; 
+        
+        // Adiciona um espaço no final da linha para garantir que o último token seja processado.
+        linha += ' '; 
 
-        // Remove espaços em branco do início e do fim da linha
         for (size_t i = 0; i < linha.size(); ++i) {
             char c = linha[i]; // Caractere atual
 
-            // Verifica se o caractere é um espaço em branco ou um símbolo
-            // Se for espaço em branco, processa o token atual se não estiver vazio
-            // Se for símbolo, processa o token atual e adiciona o símbolo à saída
-            if (isspace(c)) {
-                if (!token.empty()) {
-                    string tipo;
-                    if (palavrasReservadas.count(token)) {
-                        tipo = "Palavra reservada";
-                    } else if (all_of(token.begin(), token.end(), ::isdigit)) {
-                        tipo = "Numero";
-                    } else if (isalpha(token[0])) {
-                        tipo = "Identificador";
-                    }
-                    
-                    // Se o token não for vazio, printa e grava na saída
-                    if (!tipo.empty()) {
-                        cout << left << setw(lexemaWidth) << token << setw(tipoWidth) << tipo << numeroLinha << endl;
-                        saida << left << setw(lexemaWidth) << token << setw(tipoWidth) << tipo << endl;  // Sem "Linha"
-                    }
-                    token.clear();
-                }
-            }
-            else if (c == '{') { // Verifica se o caractere é '{' e ignora o comentário
+            // Ignora comentários de bloco {}
+            if (c == '{') {
                 while (i < linha.size() && linha[i] != '}') { 
                     ++i;
                 }
+                continue; // Continua para o próximo caractere após o fim do comentário
             }
-            else if (c == '/') { // Verifica se o caractere é '/' e ignora o comentário de linha
+
+            // Ignora comentários de bloco (* ... *)
+            if (c == '(' && i + 1 < linha.size() && linha[i + 1] == '*') {
+                // Avança o índice para depois do '(*'
+                i += 2; 
+                // Loop para encontrar o fechamento do comentário '*)'
+                while (i < linha.size()) {
+                    if (linha[i] == '*' && i + 1 < linha.size() && linha[i+1] == ')') {
+                        i++; // Pula o ')' para continuar a análise após o comentário
+                        break;
+                    }
+                    i++;
+                }
+                continue; // Continua para o próximo caractere após o fim do comentário
+            }
+
+            // Ignora comentários de linha //
+            if (c == '/') {
                 if (i + 1 < linha.size() && linha[i + 1] == '/') {
-                    break;
+                    break; // Sai do loop da linha, ignorando o resto da linha
                 }
             }
-            else if (c == '\'') { // Verifica se o caractere é "'" e ignora a string entre aspas simples
-                while (i < linha.size() && linha[i] != '\'') {
-                    ++i;
-                }
-            }
-            // Verifica se o caractere é um símbolo, se for, processa o token atual e adiciona o símbolo à saída
-            // Se não for símbolo, adiciona o caractere ao token atual
-            else if (isSymbol(c)) {
-                if (!token.empty()) {
+            // Ignora strings entre aspas simples ''
+            if (c == '\'') {
+                // Processa qualquer token antes da string (se houver)
+                if (!token_buffer.empty()) {
                     string tipo;
-                    if (palavrasReservadas.count(token)) {
+                    if (palavrasReservadas.count(token_buffer)) {
                         tipo = "Palavra reservada";
-                    } else if (all_of(token.begin(), token.end(), ::isdigit)) {
+                    } else if (all_of(token_buffer.begin(), token_buffer.end(), ::isdigit)) {
                         tipo = "Numero";
-                    } else if (isalpha(token[0])) {
+                    } else if (isalpha(token_buffer[0])) {
+                        tipo = "Identificador";
+                    }
+                    if (!tipo.empty()) { // Apenas imprime se o token for reconhecido
+                        cout << left << setw(lexemaWidth) << token_buffer << setw(tipoWidth) << tipo << numeroLinha << endl;
+                        saida << left << setw(lexemaWidth) << token_buffer << setw(tipoWidth) << tipo << endl;
+                    }
+                    token_buffer.clear();
+                }
+                // Avança o índice para pular a string literal sem processá-la como tokens
+                i++; // Pula a primeira aspa
+                while (i < linha.size() && linha[i] != '\'') {
+                    i++;
+                }
+                continue; 
+            }
+
+            // Se for espaço em branco, processa o token atual se não estiver vazio
+            if (isspace(c)) {
+                if (!token_buffer.empty()) {
+                    string tipo;
+                    if (palavrasReservadas.count(token_buffer)) {
+                        tipo = "Palavra reservada";
+                    } else if (all_of(token_buffer.begin(), token_buffer.end(), ::isdigit)) {
+                        tipo = "Numero";
+                    } else if (!token_buffer.empty() && isalpha(token_buffer[0])) { 
                         tipo = "Identificador";
                     }
                     
-                    if (!tipo.empty()) {
-                        cout << left << setw(lexemaWidth) << token << setw(tipoWidth) << tipo << numeroLinha << endl;
-                        saida << left << setw(lexemaWidth) << token << setw(tipoWidth) << tipo << endl;
+                    if (!tipo.empty()) { // Apenas imprime se o token for reconhecido
+                        cout << left << setw(lexemaWidth) << token_buffer << setw(tipoWidth) << tipo << numeroLinha << endl;
+                        saida << left << setw(lexemaWidth) << token_buffer << setw(tipoWidth) << tipo << endl;
                     }
-                    token.clear();
+                    token_buffer.clear();
+                }
+            }
+            // Se for um símbolo, processa o token_buffer atual e depois o símbolo
+            else if (isSymbol(c)) {
+                if (!token_buffer.empty()) {
+                    string tipo;
+                    if (palavrasReservadas.count(token_buffer)) {
+                        tipo = "Palavra reservada";
+                    } else if (all_of(token_buffer.begin(), token_buffer.end(), ::isdigit)) {
+                        tipo = "Numero";
+                    } else if (isalpha(token_buffer[0])) {
+                        tipo = "Identificador";
+                    }
+
+                    if (!tipo.empty()) { // Apenas imprime se o token for reconhecido
+                        cout << left << setw(lexemaWidth) << token_buffer << setw(tipoWidth) << tipo << numeroLinha << endl;
+                        saida << left << setw(lexemaWidth) << token_buffer << setw(tipoWidth) << tipo << endl;
+                    }
+                    token_buffer.clear();
                 }
 
-                // Processa o símbolo e adiciona à saída para o console e o arquivo
-                // Verifica se o símbolo é parte de um operador de dois caracteres (como :=, <=, >=, <>)
-                string simbolo(1, c);
-                if ((c == ':' || c == '<' || c == '>') && i + 1 < linha.size()) {
-                    char prox = linha[i + 1];
-                    if (prox == '=' || (c == '<' && prox == '>')) {
-                        simbolo += prox;
-                        ++i;
+                // Processa o símbolo (potencialmente composto, como ':=', '<=', '..')
+                string simbolo_str(1, c);
+                if (i + 1 < linha.size()) {
+                    char prox_c = linha[i + 1];
+                    string possivel_composto = string(1, c) + prox_c;
+
+                    // Lista de símbolos compostos que devem ser tratados como uma única unidade léxica
+                    unordered_set<string> simbolosCompostosDuplos = { ":=", "<=", ">=", "<>", "==", ".." };
+
+                    if (simbolosCompostosDuplos.count(possivel_composto)) {
+                        simbolo_str = possivel_composto;
+                        ++i; // Avança o índice para consumir o segundo caractere do símbolo composto
                     }
                 }
                 
-                // Determina se o símbolo é simples ou composto
-                string tipoSimbolo = getTipoSimbolo(simbolo);
-                cout << left << setw(lexemaWidth) << simbolo << setw(tipoWidth) << tipoSimbolo << numeroLinha << endl;
-                saida << left << setw(lexemaWidth) << simbolo << setw(tipoWidth) << tipoSimbolo << endl;
+                string tipoSimbolo = getTipoSimbolo(simbolo_str);
+                cout << left << setw(lexemaWidth) << simbolo_str << setw(tipoWidth) << tipoSimbolo << numeroLinha << endl;
+                saida << left << setw(lexemaWidth) << simbolo_str << setw(tipoWidth) << tipoSimbolo << endl;
             }
+            // Se não for espaço nem símbolo, adiciona o caractere ao buffer do token
             else {
-                token += c;
-            }
-        }
-
-        // Processa o último token da linha, se houver
-        if (!token.empty()) {
-            string tipo;
-            if (palavrasReservadas.count(token)) {
-                tipo = "Palavra reservada";
-            } else if (all_of(token.begin(), token.end(), ::isdigit)) {
-                tipo = "Numero";
-            } else if (isalpha(token[0])) {
-                tipo = "Identificador";
-            }
-            
-            // Se o token não for vazio, printa e grava na saída
-            if (!tipo.empty()) {
-                cout << left << setw(lexemaWidth) << token << setw(tipoWidth) << tipo << numeroLinha << endl;
-                saida << left << setw(lexemaWidth) << token << setw(tipoWidth) << tipo << endl;
+                token_buffer += c;
             }
         }
     }

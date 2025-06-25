@@ -44,6 +44,7 @@ n                   Identificador
 -                   Simbolo simples          
 1                   Numero                   
 )                   Simbolo simples          
+;                   Simbolo simples          
 end                 Palavra reservada        
 ;                   Simbolo simples          
 begin               Palavra reservada        
@@ -59,5 +60,6 @@ fatorial            Identificador
 teste               Identificador            
 )                   Simbolo simples          
 )                   Simbolo simples          
+;                   Simbolo simples          
 end                 Palavra reservada        
 .                   Simbolo simples          
