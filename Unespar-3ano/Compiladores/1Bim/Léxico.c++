@@ -4,7 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <cctype>
-#include <algorithm>
+#include <algorithm> // Para std::transform
 #include <unordered_set>
 #include <iomanip>
 
@@ -18,9 +18,7 @@ bool isSymbol(char c) {
 
 // Função para determinar se um símbolo é simples ou composto
 string getTipoSimbolo(const string& simbolo) {
-
     unordered_set<string> simbolosCompostos = { ":=", "<=", ">=", "<>", "==", ".." };
-
     if (simbolosCompostos.count(simbolo)) {
         return "Simbolo composto";
     } else {
@@ -43,12 +41,12 @@ int main() {
         return 1;
     }
 
-    // Conjunto de palavras reservadas, agora com 'label', 'type', 'array', 'of' e 'real'
+    // Conjunto de palavras reservadas (agora 'program' não está aqui, será tratado separadamente)
     unordered_set<string> palavrasReservadas = {
-        "program", "Program", "var", "function", "begin", "end", "read", "write",
-    "if", "then", "else", "integer", "boolean", "double", "while",
-    "procedure", "goto", "for", "do", "not", "and", "or", "to", "downto",
-    "label", "type", "array", "of", "real", "div", "mod" 
+        "var", "function", "begin", "end", "read", "write",
+        "if", "then", "else", "integer", "boolean", "double", "while",
+        "procedure", "goto", "for", "do", "not", "and", "or", "to", "downto",
+        "label", "type", "array", "of", "real", "div", "mod" 
     };
 
     string linha; // Variável para armazenar cada linha do arquivo
@@ -111,13 +109,23 @@ int main() {
                 // Processa qualquer token antes da string (se houver)
                 if (!token_buffer.empty()) {
                     string tipo;
-                    if (palavrasReservadas.count(token_buffer)) {
+                    // Tratamento especial para "Program"
+                    if (token_buffer == "Program") {
                         tipo = "Palavra reservada";
-                    } else if (all_of(token_buffer.begin(), token_buffer.end(), ::isdigit)) {
-                        tipo = "Numero";
-                    } else if (isalpha(token_buffer[0])) {
-                        tipo = "Identificador";
+                    } else {
+                        string lower_token_buffer = token_buffer;
+                        transform(lower_token_buffer.begin(), lower_token_buffer.end(), lower_token_buffer.begin(), ::tolower);
+
+                        if (palavrasReservadas.count(lower_token_buffer)) {
+                            tipo = "Palavra reservada";
+                            token_buffer = lower_token_buffer; // Armazena a versão minúscula
+                        } else if (all_of(token_buffer.begin(), token_buffer.end(), ::isdigit)) {
+                            tipo = "Numero";
+                        } else if (isalpha(token_buffer[0])) { 
+                            tipo = "Identificador";
+                        }
                     }
+                    
                     if (!tipo.empty()) { // Apenas imprime se o token for reconhecido
                         cout << left << setw(lexemaWidth) << token_buffer << setw(tipoWidth) << tipo << numeroLinha << endl;
                         saida << left << setw(lexemaWidth) << token_buffer << setw(tipoWidth) << tipo << endl;
@@ -136,12 +144,21 @@ int main() {
             if (isspace(c)) {
                 if (!token_buffer.empty()) {
                     string tipo;
-                    if (palavrasReservadas.count(token_buffer)) {
+                    // Tratamento especial para "Program"
+                    if (token_buffer == "Program") {
                         tipo = "Palavra reservada";
-                    } else if (all_of(token_buffer.begin(), token_buffer.end(), ::isdigit)) {
-                        tipo = "Numero";
-                    } else if (!token_buffer.empty() && isalpha(token_buffer[0])) { 
-                        tipo = "Identificador";
+                    } else {
+                        string lower_token_buffer = token_buffer;
+                        transform(lower_token_buffer.begin(), lower_token_buffer.end(), lower_token_buffer.begin(), ::tolower);
+
+                        if (palavrasReservadas.count(lower_token_buffer)) {
+                            tipo = "Palavra reservada";
+                            token_buffer = lower_token_buffer; // Armazena a versão minúscula
+                        } else if (all_of(token_buffer.begin(), token_buffer.end(), ::isdigit)) {
+                            tipo = "Numero";
+                        } else if (!token_buffer.empty() && isalpha(token_buffer[0])) { 
+                            tipo = "Identificador";
+                        }
                     }
                     
                     if (!tipo.empty()) { // Apenas imprime se o token for reconhecido
@@ -155,12 +172,21 @@ int main() {
             else if (isSymbol(c)) {
                 if (!token_buffer.empty()) {
                     string tipo;
-                    if (palavrasReservadas.count(token_buffer)) {
+                    // Tratamento especial para "Program"
+                    if (token_buffer == "Program") {
                         tipo = "Palavra reservada";
-                    } else if (all_of(token_buffer.begin(), token_buffer.end(), ::isdigit)) {
-                        tipo = "Numero";
-                    } else if (isalpha(token_buffer[0])) {
-                        tipo = "Identificador";
+                    } else {
+                        string lower_token_buffer = token_buffer;
+                        transform(lower_token_buffer.begin(), lower_token_buffer.end(), lower_token_buffer.begin(), ::tolower);
+
+                        if (palavrasReservadas.count(lower_token_buffer)) {
+                            tipo = "Palavra reservada";
+                            token_buffer = lower_token_buffer; // Armazena a versão minúscula
+                        } else if (all_of(token_buffer.begin(), token_buffer.end(), ::isdigit)) {
+                            tipo = "Numero";
+                        } else if (isalpha(token_buffer[0])) {
+                            tipo = "Identificador";
+                        }
                     }
 
                     if (!tipo.empty()) { // Apenas imprime se o token for reconhecido

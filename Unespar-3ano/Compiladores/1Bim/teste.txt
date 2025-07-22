@@ -1,17 +1,13 @@
-Program Exemplo;
+Program ErrorExample;
 
-var
-  m, y, teste: integer;
+Var
+    valor : integer // Erro 1: Falta ';' aqui
 
-function fatorial(n: integer): integer;
-begin
-  if (n < 1) then
-    fatorial := 1
-  else
-    fatorial := n * fatorial(n - 1);
-end;
+Begin // Erro 2: Falta 'var', 'label', 'type', 'function', 'procedure' ou 'end' antes de 'begin' se for um bloco de programa principal, ou 'begin' inesperado se for um sub-bloco
+    resultado := 20; // Erro 3: Variavel 'resultado' nao declarada (sintaticamente pode ser um erro se 'declaracao_variaveis' nao for chamada)
 
-begin
-  read(teste);
-  write(fatorial(teste));
-end.
+    if (resultado > 10 // Erro 4: Falta ')' para fechar a condicao
+    then
+        Write('Maior');
+    
+    // Erro 5: Falta 'end.' no final do programa
